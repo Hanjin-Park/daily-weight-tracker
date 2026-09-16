@@ -72,6 +72,10 @@ header h1 {
     flex-wrap: wrap;
 }
 
+.user-info[hidden] {
+    display: none;
+}
+
 .user-info span {
     font-weight: 600;
 }
@@ -88,6 +92,10 @@ main {
     display: flex;
     flex-direction: column;
     gap: 30px;
+}
+
+main[hidden] {
+    display: none;
 }
 
 section {
