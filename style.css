@@ -54,6 +54,35 @@ header h1 {
     opacity: 0.9;
 }
 
+/* 로그인 영역 */
+.auth-section {
+    margin-top: 20px;
+}
+
+.auth-section .btn {
+    flex: none;
+    padding: 10px 20px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.user-info span {
+    font-weight: 600;
+}
+
+.login-notice {
+    text-align: center;
+    color: var(--text-light);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
 /* 메인 섹션 */
 main {
     display: flex;

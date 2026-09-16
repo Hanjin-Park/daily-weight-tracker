@@ -1,6 +1,11 @@
 // 상태 관리
 let weightData = [];
 let chart = null;
+let currentUser = null;
+
+// Firebase
+const auth = firebase.auth();
+const db = firebase.firestore();
 
 // DOM 요소
 const dateInput = document.getElementById('date');
@@ -14,6 +19,12 @@ const currentWeightEl = document.getElementById('currentWeight');
 const maxWeightEl = document.getElementById('maxWeight');
 const minWeightEl = document.getElementById('minWeight');
 const weightChangeEl = document.getElementById('weightChange');
+const loginBtn = document.getElementById('loginBtn');
+const logoutBtn = document.getElementById('logoutBtn');
+const userInfo = document.getElementById('userInfo');
+const userEmailEl = document.getElementById('userEmail');
+const mainContent = document.getElementById('mainContent');
+const loginNotice = document.getElementById('loginNotice');
 
 // 초기화
 function init() {
@@ -22,13 +33,12 @@ function init() {
     dateInput.value = today;
     dateInput.max = today;
 
-    // LocalStorage에서 데이터 불러오기
-    loadData();
-
     // 이벤트 리스너 등록
     addBtn.addEventListener('click', addWeight);
     clearAllBtn.addEventListener('click', clearAllData);
     exportBtn.addEventListener('click', exportToCSV);
+    loginBtn.addEventListener('click', signIn);
+    logoutBtn.addEventListener('click', () => auth.signOut());
 
     // Enter 키로 데이터 추가
     weightInput.addEventListener('keypress', (e) => {
@@ -39,26 +49,62 @@ function init() {
         if (e.key === 'Enter') addWeight();
     });
 
-    // 초기 렌더링
-    renderData();
+    // 로그인 상태 변화 감지
+    auth.onAuthStateChanged(handleAuthChange);
 }
 
-// LocalStorage에서 데이터 불러오기
-function loadData() {
-    const saved = localStorage.getItem('weightData');
-    if (saved) {
-        try {
-            weightData = JSON.parse(saved).sort((a, b) => new Date(a.date) - new Date(b.date));
-        } catch (e) {
-            console.error('데이터 로드 실패:', e);
-            weightData = [];
-        }
+// Google 로그인
+function signIn() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).catch((e) => {
+        console.error('로그인 실패:', e);
+        alert('로그인에 실패했습니다: ' + e.message);
+    });
+}
+
+// 로그인 상태에 따른 화면 전환
+async function handleAuthChange(user) {
+    currentUser = user;
+
+    if (user) {
+        loginBtn.hidden = true;
+        userInfo.hidden = false;
+        userEmailEl.textContent = user.email;
+        mainContent.hidden = false;
+        loginNotice.hidden = true;
+
+        await loadData();
+        renderData();
+    } else {
+        loginBtn.hidden = false;
+        userInfo.hidden = true;
+        mainContent.hidden = true;
+        loginNotice.hidden = false;
+        weightData = [];
     }
 }
 
-// LocalStorage에 데이터 저장
-function saveData() {
-    localStorage.setItem('weightData', JSON.stringify(weightData));
+// Firestore에서 데이터 불러오기
+async function loadData() {
+    try {
+        const doc = await db.collection('users').doc(currentUser.uid).get();
+        const saved = doc.exists ? doc.data().weightData : null;
+        weightData = (saved || []).sort((a, b) => new Date(a.date) - new Date(b.date));
+    } catch (e) {
+        console.error('데이터 로드 실패:', e);
+        alert('데이터를 불러오지 못했습니다: ' + e.message);
+        weightData = [];
+    }
+}
+
+// Firestore에 데이터 저장
+async function saveData() {
+    try {
+        await db.collection('users').doc(currentUser.uid).set({ weightData });
+    } catch (e) {
+        console.error('데이터 저장 실패:', e);
+        alert('저장에 실패했습니다: ' + e.message);
+    }
 }
 
 // 체중 데이터 추가
