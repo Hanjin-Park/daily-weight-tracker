@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>하루 체중 관리</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 하루 체중 관리</h1>
+            <p class="subtitle">매일의 체중을 기록하고 추이를 확인하세요</p>
+        </header>
+
+        <main>
+            <!-- 입력 섹션 -->
+            <section class="input-section">
+                <div class="form-group">
+                    <label for="date">날짜</label>
+                    <input
+                        type="date"
+                        id="date"
+                        max=""
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="weight">체중 (kg)</label>
+                    <input
+                        type="number"
+                        id="weight"
+                        placeholder="예: 70.5"
+                        step="0.1"
+                        min="0"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="memo">메모 (선택사항)</label>
+                    <input
+                        type="text"
+                        id="memo"
+                        placeholder="예: 아침 식전"
+                    >
+                </div>
+
+                <div class="button-group">
+                    <button id="addBtn" class="btn btn-primary">추가</button>
+                    <button id="clearAllBtn" class="btn btn-danger">모두 삭제</button>
+                </div>
+            </section>
+
+            <!-- 통계 섹션 -->
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-label">현재 체중</div>
+                    <div class="stat-value" id="currentWeight">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">최고 체중</div>
+                    <div class="stat-value" id="maxWeight">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">최저 체중</div>
+                    <div class="stat-value" id="minWeight">-</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">변화량</div>
+                    <div class="stat-value" id="weightChange">-</div>
+                </div>
+            </section>
+
+            <!-- 차트 섹션 -->
+            <section class="chart-section">
+                <h2>체중 추이</h2>
+                <div class="chart-container">
+                    <canvas id="weightChart"></canvas>
+                </div>
+            </section>
+
+            <!-- 데이터 테이블 섹션 -->
+            <section class="table-section">
+                <div class="table-header">
+                    <h2>기록된 데이터</h2>
+                    <button id="exportBtn" class="btn btn-secondary">CSV 내보내기</button>
+                </div>
+                <div class="table-container">
+                    <table id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>날짜</th>
+                                <th>체중 (kg)</th>
+                                <th>메모</th>
+                                <th>작업</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <tr class="empty-row">
+                                <td colspan="4">기록된 데이터가 없습니다</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Daily Weight Tracker | GitHub Pages로 호스팅됨</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

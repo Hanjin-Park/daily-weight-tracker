@@ -1,0 +1,19 @@
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies (프론트엔드 전용이므로 필요없음)
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
