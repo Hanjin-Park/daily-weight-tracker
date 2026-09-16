@@ -12,16 +12,13 @@
         <header>
             <h1>📊 하루 체중 관리</h1>
             <p class="subtitle">매일의 체중을 기록하고 추이를 확인하세요</p>
-            <div class="auth-section">
-                <button id="loginBtn" class="btn btn-primary">Google로 로그인</button>
-                <div id="userInfo" class="user-info" hidden>
-                    <span id="userEmail"></span>
-                    <button id="logoutBtn" class="btn btn-secondary">로그아웃</button>
-                </div>
+            <div id="userInfo" class="user-info" hidden>
+                <span id="userEmail"></span>
+                <button id="logoutBtn" class="btn btn-secondary">로그아웃</button>
             </div>
         </header>
 
-        <p id="loginNotice" class="login-notice">로그인 후 이용해주세요.</p>
+        <p id="loadingNotice" class="login-notice">로그인 확인 중...</p>
 
         <main id="mainContent" hidden>
             <!-- 입력 섹션 -->

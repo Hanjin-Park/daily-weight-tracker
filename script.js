@@ -19,12 +19,11 @@ const currentWeightEl = document.getElementById('currentWeight');
 const maxWeightEl = document.getElementById('maxWeight');
 const minWeightEl = document.getElementById('minWeight');
 const weightChangeEl = document.getElementById('weightChange');
-const loginBtn = document.getElementById('loginBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 const userInfo = document.getElementById('userInfo');
 const userEmailEl = document.getElementById('userEmail');
 const mainContent = document.getElementById('mainContent');
-const loginNotice = document.getElementById('loginNotice');
+const loadingNotice = document.getElementById('loadingNotice');
 
 // 초기화
 function init() {
@@ -37,7 +36,6 @@ function init() {
     addBtn.addEventListener('click', addWeight);
     clearAllBtn.addEventListener('click', clearAllData);
     exportBtn.addEventListener('click', exportToCSV);
-    loginBtn.addEventListener('click', signIn);
     logoutBtn.addEventListener('click', () => auth.signOut());
 
     // Enter 키로 데이터 추가
@@ -53,34 +51,21 @@ function init() {
     auth.onAuthStateChanged(handleAuthChange);
 }
 
-// Google 로그인
-function signIn() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider).catch((e) => {
-        console.error('로그인 실패:', e);
-        alert('로그인에 실패했습니다: ' + e.message);
-    });
-}
-
 // 로그인 상태에 따른 화면 전환
 async function handleAuthChange(user) {
     currentUser = user;
 
     if (user) {
-        loginBtn.hidden = true;
         userInfo.hidden = false;
         userEmailEl.textContent = user.email;
+        loadingNotice.hidden = true;
         mainContent.hidden = false;
-        loginNotice.hidden = true;
 
         await loadData();
         renderData();
     } else {
-        loginBtn.hidden = false;
-        userInfo.hidden = true;
-        mainContent.hidden = true;
-        loginNotice.hidden = false;
-        weightData = [];
+        // 로그인되어 있지 않으면 로그인 페이지로 이동
+        window.location.replace('login.html');
     }
 }
 

@@ -87,6 +87,45 @@ header h1 {
     font-size: 1.1rem;
 }
 
+/* 로그인 페이지 */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-card {
+    background-color: var(--bg-white);
+    border-radius: 10px;
+    padding: 40px 30px;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+}
+
+.login-card h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.login-card .subtitle {
+    color: var(--text-light);
+    margin-bottom: 25px;
+}
+
+.login-card .btn {
+    width: 100%;
+}
+
+.login-error {
+    margin-top: 15px;
+    color: var(--danger-color);
+    font-size: 0.9rem;
+}
+
 /* 메인 섹션 */
 main {
     display: flex;
